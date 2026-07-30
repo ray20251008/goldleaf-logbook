@@ -100,8 +100,25 @@ function Index() {
     return [...set].sort().reverse();
   }, [rows, month]);
 
-  const stats = useMemo(() => buildStats(rows, month), [rows, month]);
-  const monthRows = rows.filter((r) => monthKey(r.intake_date) === month);
+  const workers = useMemo(
+    () => [...new Set(rows.map((r) => r.worker))].sort(),
+    [rows],
+  );
+  const scopedRows = useMemo(
+    () => (worker ? rows.filter((r) => r.worker === worker) : rows),
+    [rows, worker],
+  );
+  const stats = useMemo(() => buildStats(scopedRows, month), [scopedRows, month]);
+  const monthRows = scopedRows.filter((r) => monthKey(r.intake_date) === month);
+
+  const exportPayload = () => ({
+    month,
+    worker,
+    stats: stats.list,
+    totals: stats.totals,
+    averages: stats.averages,
+    records: monthRows,
+  });
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
