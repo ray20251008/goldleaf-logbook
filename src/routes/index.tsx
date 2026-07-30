@@ -178,42 +178,39 @@ function Index() {
             </div>
 
             <div className="overflow-x-auto rounded-lg border border-border">
-              <table className="w-full min-w-[560px] text-sm">
+              <table className="w-full min-w-[320px] text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-left text-muted-foreground">
                     <Th>製作人員</Th>
-                    <Th>進貨籃數</Th>
-                    <Th>出貨袋數</Th>
-                    <Th>出貨疊數</Th>
+                    <Th>製作疊數</Th>
                   </tr>
                 </thead>
                 <tbody>
                   {WORKERS.map((w) => (
                     <tr key={w} className="border-b border-border/60 last:border-0">
                       <Td className="font-medium">{w}</Td>
-                      {(["baskets_in", "bags_out", "stacks_out"] as const).map((k) => (
-                        <Td key={k}>
-                          <Input
-                            type="number"
-                            min="0"
-                            step="0.5"
-                            placeholder="0"
-                            aria-label={`${w} ${k}`}
-                            value={entries[w][k]}
-                            onChange={(e) =>
-                              setEntries((prev) => ({
-                                ...prev,
-                                [w]: { ...prev[w], [k]: e.target.value },
-                              }))
-                            }
-                          />
-                        </Td>
-                      ))}
+                      <Td>
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.5"
+                          placeholder="0"
+                          aria-label={`${w} 製作疊數`}
+                          value={entries[w].stacks_out}
+                          onChange={(e) =>
+                            setEntries((prev) => ({
+                              ...prev,
+                              [w]: { ...prev[w], stacks_out: e.target.value },
+                            }))
+                          }
+                        />
+                      </Td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+
 
             <Button type="submit" disabled={addRecord.isPending} className="w-full md:w-auto">
               {addRecord.isPending ? "儲存中…" : "儲存四人紀錄"}
