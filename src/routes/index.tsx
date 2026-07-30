@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { buildStats, monthKey, num, type JossRecord } from "@/lib/joss";
+import { buildStats, monthKey, num, WORKERS, type JossRecord } from "@/lib/joss";
 import { exportCsv, exportPdf } from "@/lib/export";
 import { Leaderboard, ProductionTrend } from "@/components/stats-charts";
 
