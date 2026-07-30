@@ -102,7 +102,7 @@ export function Leaderboard({ stats }: { stats: WorkerMonthStat[] }) {
     <div>
       <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
         <Trophy className="size-4 text-primary" />
-        本月排行榜（依平均每筆出貨袋數）
+        本月排行榜（依平均每筆疊數）
       </h3>
       {ranking.length === 0 ? (
         <p className="py-8 text-sm text-muted-foreground">本月尚無紀錄</p>
@@ -127,18 +127,19 @@ export function Leaderboard({ stats }: { stats: WorkerMonthStat[] }) {
                   {r.worker}
                 </span>
                 <span className="font-display text-base font-bold text-primary">
-                  {num(r.avgBagsPerRecord)} 袋/筆
+                  {num(r.avgStacksPerRecord)} 疊/日
                 </span>
               </div>
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-border">
                 <div
                   className="h-full rounded-full bg-primary"
-                  style={{ width: `${Math.max(4, (r.avgBagsPerRecord / max) * 100)}%` }}
+                  style={{ width: `${Math.max(4, (r.avgStacksPerRecord / max) * 100)}%` }}
                 />
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                {r.records} 筆 · 總 {num(r.bags)} 袋 · {num(r.baskets)} 籃 · {num(r.stacks)} 疊
+                {r.records} 日 · 總 {num(r.stacks)} 疊
               </p>
+
             </li>
           ))}
         </ol>
