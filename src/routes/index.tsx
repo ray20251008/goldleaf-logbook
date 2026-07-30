@@ -150,77 +150,79 @@ function Index() {
         <section className="card-paper mb-8 p-5 md:p-6">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Plus className="size-5 text-primary" />
-            新增紀錄
+            新增每日紀錄（四人）
           </h2>
-          <form onSubmit={submit} className="grid gap-4 md:grid-cols-4">
-            <Field label="製作人員">
-              <Input
-                value={form.worker}
-                onChange={(e) => setForm({ ...form, worker: e.target.value })}
-                placeholder="例：阿明"
-                maxLength={40}
-              />
-            </Field>
-            <Field label="進貨日">
-              <Input
-                type="date"
-                value={form.intake_date}
-                onChange={(e) => setForm({ ...form, intake_date: e.target.value })}
-              />
-            </Field>
-            <Field label="完成日">
-              <Input
-                type="date"
-                value={form.done_date}
-                onChange={(e) => setForm({ ...form, done_date: e.target.value })}
-              />
-            </Field>
-            <Field label="進貨籃數">
-              <Input
-                type="number"
-                min="0"
-                step="0.5"
-                value={form.baskets_in}
-                onChange={(e) => setForm({ ...form, baskets_in: e.target.value })}
-                placeholder="0"
-              />
-            </Field>
-            <Field label="出貨袋數">
-              <Input
-                type="number"
-                min="0"
-                step="0.5"
-                value={form.bags_out}
-                onChange={(e) => setForm({ ...form, bags_out: e.target.value })}
-                placeholder="0"
-              />
-            </Field>
-            <Field label="出貨疊數">
-              <Input
-                type="number"
-                min="0"
-                step="0.5"
-                value={form.stacks_out}
-                onChange={(e) => setForm({ ...form, stacks_out: e.target.value })}
-                placeholder="0"
-              />
-            </Field>
-            <Field label="備註">
-              <Input
-                value={form.note}
-                onChange={(e) => setForm({ ...form, note: e.target.value })}
-                placeholder="選填"
-                maxLength={200}
-              />
-            </Field>
-            <div className="flex items-end">
-              <Button type="submit" className="w-full" disabled={addRecord.isPending}>
-                {addRecord.isPending ? "儲存中…" : "新增紀錄"}
-              </Button>
+          <form onSubmit={submit} className="space-y-5">
+            <div className="grid gap-4 md:grid-cols-3">
+              <Field label="進貨日">
+                <Input
+                  type="date"
+                  value={shared.intake_date}
+                  onChange={(e) => setShared({ ...shared, intake_date: e.target.value })}
+                />
+              </Field>
+              <Field label="完成日">
+                <Input
+                  type="date"
+                  value={shared.done_date}
+                  onChange={(e) => setShared({ ...shared, done_date: e.target.value })}
+                />
+              </Field>
+              <Field label="備註">
+                <Input
+                  value={shared.note}
+                  onChange={(e) => setShared({ ...shared, note: e.target.value })}
+                  placeholder="選填"
+                  maxLength={200}
+                />
+              </Field>
             </div>
+
+            <div className="overflow-x-auto rounded-lg border border-border">
+              <table className="w-full min-w-[560px] text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/40 text-left text-muted-foreground">
+                    <Th>製作人員</Th>
+                    <Th>進貨籃數</Th>
+                    <Th>出貨袋數</Th>
+                    <Th>出貨疊數</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {WORKERS.map((w) => (
+                    <tr key={w} className="border-b border-border/60 last:border-0">
+                      <Td className="font-medium">{w}</Td>
+                      {(["baskets_in", "bags_out", "stacks_out"] as const).map((k) => (
+                        <Td key={k}>
+                          <Input
+                            type="number"
+                            min="0"
+                            step="0.5"
+                            placeholder="0"
+                            aria-label={`${w} ${k}`}
+                            value={entries[w][k]}
+                            onChange={(e) =>
+                              setEntries((prev) => ({
+                                ...prev,
+                                [w]: { ...prev[w], [k]: e.target.value },
+                              }))
+                            }
+                          />
+                        </Td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <Button type="submit" disabled={addRecord.isPending} className="w-full md:w-auto">
+              {addRecord.isPending ? "儲存中…" : "儲存四人紀錄"}
+            </Button>
           </form>
           {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
         </section>
+
 
         <section className="card-paper mb-8 p-5 md:p-6">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
