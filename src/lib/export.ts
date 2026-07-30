@@ -43,32 +43,22 @@ export function buildExportRows(p: ExportPayload): (string | number)[][] {
     ["金紙製作紀錄統計"],
     ["月份", p.month, "人員", scope],
     [],
-    ["製作人員", "筆數", "進貨籃數", "出貨袋數", "疊數", "平均每筆袋數"],
+    ["製作人員", "紀錄天數", "總疊數", "平均每日疊數"],
   ];
   for (const s of p.stats) {
-    rows.push([s.worker, s.records, s.baskets, s.bags, s.stacks, f2(s.bags / (s.records || 1))]);
+    rows.push([s.worker, s.records, s.stacks, f2(s.stacks / (s.records || 1))]);
   }
   rows.push([
     "月底平均（每人）",
     f2(p.totals.records / (p.stats.length || 1)),
-    f2(p.averages.perPersonBaskets),
-    f2(p.averages.perPersonBags),
     f2(p.averages.perPersonStacks),
-    f2(p.averages.perRecordBags),
+    f2(p.totals.stacks / (p.totals.records || 1)),
   ]);
   rows.push([]);
   rows.push(["明細"]);
-  rows.push(["進貨日", "完成日", "製作人員", "進貨籃數", "出貨袋數", "疊數", "備註"]);
+  rows.push(["進貨日", "完成日", "製作人員", "疊數", "備註"]);
   for (const r of p.records) {
-    rows.push([
-      r.intake_date,
-      r.done_date ?? "",
-      r.worker,
-      r.baskets_in,
-      r.bags_out,
-      r.stacks_out,
-      r.note ?? "",
-    ]);
+    rows.push([r.intake_date, r.done_date ?? "", r.worker, r.stacks_out, r.note ?? ""]);
   }
   return rows;
 }
