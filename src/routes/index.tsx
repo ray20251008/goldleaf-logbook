@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Trash2, Plus, BarChart3, ScrollText } from "lucide-react";
+import { Trash2, Plus, BarChart3, ScrollText, FileDown, Printer } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { buildStats, monthKey, num, type JossRecord } from "@/lib/joss";
+import { exportCsv, exportPdf } from "@/lib/export";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,6 +36,7 @@ const today = () => new Date().toISOString().slice(0, 10);
 function Index() {
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => today().slice(0, 7));
+  const [worker, setWorker] = useState("");
   const [form, setForm] = useState({
     worker: "",
     intake_date: today(),
@@ -100,8 +102,25 @@ function Index() {
     return [...set].sort().reverse();
   }, [rows, month]);
 
-  const stats = useMemo(() => buildStats(rows, month), [rows, month]);
-  const monthRows = rows.filter((r) => monthKey(r.intake_date) === month);
+  const workers = useMemo(
+    () => [...new Set(rows.map((r) => r.worker))].sort(),
+    [rows],
+  );
+  const scopedRows = useMemo(
+    () => (worker ? rows.filter((r) => r.worker === worker) : rows),
+    [rows, worker],
+  );
+  const stats = useMemo(() => buildStats(scopedRows, month), [scopedRows, month]);
+  const monthRows = scopedRows.filter((r) => monthKey(r.intake_date) === month);
+
+  const exportPayload = () => ({
+    month,
+    worker,
+    stats: stats.list,
+    totals: stats.totals,
+    averages: stats.averages,
+    records: monthRows,
+  });
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -206,17 +225,39 @@ function Index() {
               <BarChart3 className="size-5 text-primary" />
               每月統計
             </h2>
-            <select
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              className="h-9 rounded-md border border-input bg-card px-3 text-sm"
-            >
-              {months.map((m) => (
-                <option key={m} value={m}>
-                  {m.replace("-", " 年 ")} 月
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+                className="h-9 rounded-md border border-input bg-card px-3 text-sm"
+                aria-label="選擇月份"
+              >
+                {months.map((m) => (
+                  <option key={m} value={m}>
+                    {m.replace("-", " 年 ")} 月
+                  </option>
+                ))}
+              </select>
+              <select
+                value={worker}
+                onChange={(e) => setWorker(e.target.value)}
+                className="h-9 rounded-md border border-input bg-card px-3 text-sm"
+                aria-label="選擇人員"
+              >
+                <option value="">全部人員</option>
+                {workers.map((w) => (
+                  <option key={w} value={w}>
+                    {w}
+                  </option>
+                ))}
+              </select>
+              <Button variant="outline" size="sm" onClick={() => exportCsv(exportPayload())}>
+                <FileDown className="size-4" /> 匯出 CSV
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => exportPdf(exportPayload())}>
+                <Printer className="size-4" /> 匯出 PDF
+              </Button>
+            </div>
           </div>
 
           <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
