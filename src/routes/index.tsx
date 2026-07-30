@@ -333,14 +333,12 @@ function Index() {
             <p className="text-sm text-muted-foreground">載入中…</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[720px] text-sm">
+              <table className="w-full min-w-[560px] text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-muted-foreground">
                     <Th>進貨日</Th>
                     <Th>完成日</Th>
                     <Th>製作人員</Th>
-                    <Th>進貨籃數</Th>
-                    <Th>出貨袋數</Th>
                     <Th>疊數</Th>
                     <Th>備註</Th>
                     <Th> </Th>
@@ -352,9 +350,8 @@ function Index() {
                       <Td>{r.intake_date}</Td>
                       <Td>{r.done_date ?? "—"}</Td>
                       <Td className="font-medium">{r.worker}</Td>
-                      <Td>{num(r.baskets_in)}</Td>
-                      <Td>{num(r.bags_out)}</Td>
                       <Td>{num(r.stacks_out)}</Td>
+
                       <Td className="text-muted-foreground">{r.note ?? "—"}</Td>
                       <Td>
                         <Button
