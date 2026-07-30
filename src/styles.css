@@ -147,3 +147,31 @@
     color: var(--color-foreground);
   }
 }
+
+@theme inline {
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --color-gold: oklch(0.78 0.13 78);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    background-image: radial-gradient(oklch(0.85 0.05 80 / 0.35) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+}
+
+@utility card-paper {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-paper);
+}
+
+@utility gold-bar {
+  background-image: var(--gradient-gold);
+}
