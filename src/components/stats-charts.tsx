@@ -51,7 +51,7 @@ export function ProductionTrend({
     <div>
       <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
         <TrendingUp className="size-4 text-primary" />
-        每人每月產量趨勢（出貨袋數 · 近 6 個月）
+        每人每月產量趨勢（疊數 · 近 6 個月）
       </h3>
       {people.length === 0 ? (
         <p className="py-8 text-sm text-muted-foreground">尚無資料可繪製圖表</p>
