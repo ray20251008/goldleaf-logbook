@@ -224,17 +224,39 @@ function Index() {
               <BarChart3 className="size-5 text-primary" />
               每月統計
             </h2>
-            <select
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              className="h-9 rounded-md border border-input bg-card px-3 text-sm"
-            >
-              {months.map((m) => (
-                <option key={m} value={m}>
-                  {m.replace("-", " 年 ")} 月
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+                className="h-9 rounded-md border border-input bg-card px-3 text-sm"
+                aria-label="選擇月份"
+              >
+                {months.map((m) => (
+                  <option key={m} value={m}>
+                    {m.replace("-", " 年 ")} 月
+                  </option>
+                ))}
+              </select>
+              <select
+                value={worker}
+                onChange={(e) => setWorker(e.target.value)}
+                className="h-9 rounded-md border border-input bg-card px-3 text-sm"
+                aria-label="選擇人員"
+              >
+                <option value="">全部人員</option>
+                {workers.map((w) => (
+                  <option key={w} value={w}>
+                    {w}
+                  </option>
+                ))}
+              </select>
+              <Button variant="outline" size="sm" onClick={() => exportCsv(exportPayload())}>
+                <FileDown className="size-4" /> 匯出 CSV
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => exportPdf(exportPayload())}>
+                <Printer className="size-4" /> 匯出 PDF
+              </Button>
+            </div>
           </div>
 
           <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
