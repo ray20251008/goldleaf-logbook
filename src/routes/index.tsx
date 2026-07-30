@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { buildStats, monthKey, num, type JossRecord } from "@/lib/joss";
 import { exportCsv, exportPdf } from "@/lib/export";
+import { Leaderboard, ProductionTrend } from "@/components/stats-charts";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -270,6 +271,13 @@ function Index() {
               highlight
             />
           </div>
+
+          <div className="mb-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+            <ProductionTrend rows={rows} month={month} stats={stats.list} worker={worker} />
+            <Leaderboard stats={stats.list} />
+          </div>
+
+
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
