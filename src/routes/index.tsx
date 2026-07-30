@@ -271,6 +271,13 @@ function Index() {
             />
           </div>
 
+          <div className="mb-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+            <ProductionTrend rows={rows} month={month} stats={stats.list} worker={worker} />
+            <Leaderboard stats={stats.list} />
+          </div>
+
+
+
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
               <thead>
