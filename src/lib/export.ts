@@ -72,15 +72,14 @@ export function exportPdf(p: ExportPayload) {
   const scope = p.worker || "全部人員";
   const statRows = p.stats
     .map(
-      (s) => `<tr><td>${s.worker}</td><td>${s.records}</td><td>${num(s.baskets)}</td>
-      <td>${num(s.bags)}</td><td>${num(s.stacks)}</td><td>${num(f2(s.bags / (s.records || 1)))}</td></tr>`,
+      (s) => `<tr><td>${s.worker}</td><td>${s.records}</td><td>${num(s.stacks)}</td>
+      <td>${num(f2(s.stacks / (s.records || 1)))}</td></tr>`,
     )
     .join("");
   const detailRows = p.records
     .map(
       (r) => `<tr><td>${r.intake_date}</td><td>${r.done_date ?? "—"}</td><td>${r.worker}</td>
-      <td>${num(r.baskets_in)}</td><td>${num(r.bags_out)}</td><td>${num(r.stacks_out)}</td>
-      <td>${r.note ?? "—"}</td></tr>`,
+      <td>${num(r.stacks_out)}</td><td>${r.note ?? "—"}</td></tr>`,
     )
     .join("");
 
