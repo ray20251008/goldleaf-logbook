@@ -67,26 +67,25 @@ function Index() {
 
   const addRecord = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("joss_records").insert({
-        worker: form.worker.trim(),
-        intake_date: form.intake_date,
-        done_date: form.done_date || null,
-        baskets_in: Number(form.baskets_in) || 0,
-        bags_out: Number(form.bags_out) || 0,
-        stacks_out: Number(form.stacks_out) || 0,
-        note: form.note.trim() || null,
-      });
+      const payload = WORKERS.map((w) => ({
+        worker: w,
+        intake_date: shared.intake_date,
+        done_date: shared.done_date || null,
+        baskets_in: Number(entries[w]?.baskets_in) || 0,
+        bags_out: Number(entries[w]?.bags_out) || 0,
+        stacks_out: Number(entries[w]?.stacks_out) || 0,
+        note: shared.note.trim() || null,
+      }));
+      const { error } = await supabase.from("joss_records").insert(payload);
       if (error) throw error;
     },
     onSuccess: () => {
-      setForm((f) => ({
-        ...f,
-        done_date: "",
-        baskets_in: "",
-        bags_out: "",
-        stacks_out: "",
-        note: "",
-      }));
+      setShared((s) => ({ ...s, done_date: "", note: "" }));
+      setEntries(
+        Object.fromEntries(
+          WORKERS.map((w) => [w, { baskets_in: "", bags_out: "", stacks_out: "" }]),
+        ),
+      );
       qc.invalidateQueries({ queryKey: ["joss_records"] });
     },
     onError: (e: Error) => setError(e.message),
