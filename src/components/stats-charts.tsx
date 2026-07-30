@@ -96,7 +96,7 @@ export function ProductionTrend({
 
 export function Leaderboard({ stats }: { stats: WorkerMonthStat[] }) {
   const ranking = useMemo(() => buildRanking(stats), [stats]);
-  const max = ranking[0]?.avgBagsPerRecord || 1;
+  const max = ranking[0]?.avgStacksPerRecord || 1;
 
   return (
     <div>
