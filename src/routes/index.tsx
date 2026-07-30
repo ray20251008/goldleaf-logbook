@@ -38,15 +38,18 @@ function Index() {
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => today().slice(0, 7));
   const [worker, setWorker] = useState("");
-  const [form, setForm] = useState({
-    worker: "",
+  const [shared, setShared] = useState({
     intake_date: today(),
     done_date: "",
-    baskets_in: "",
-    bags_out: "",
-    stacks_out: "",
     note: "",
   });
+  const [entries, setEntries] = useState<
+    Record<string, { baskets_in: string; bags_out: string; stacks_out: string }>
+  >(() =>
+    Object.fromEntries(
+      WORKERS.map((w) => [w, { baskets_in: "", bags_out: "", stacks_out: "" }]),
+    ),
+  );
   const [error, setError] = useState("");
 
   const { data: rows = [], isLoading } = useQuery({
