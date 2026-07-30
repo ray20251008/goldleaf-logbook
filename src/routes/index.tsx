@@ -261,16 +261,16 @@ function Index() {
             </div>
           </div>
 
-          <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat label="本月總進貨籃數" value={num(stats.totals.baskets)} />
-            <Stat label="本月總出貨袋數" value={num(stats.totals.bags)} />
+          <div className="mb-5 grid gap-3 sm:grid-cols-3">
             <Stat label="本月總疊數" value={num(stats.totals.stacks)} />
+            <Stat label="本月紀錄天數（人次）" value={num(stats.totals.records)} />
             <Stat
-              label="每人平均出貨袋數"
-              value={num(Number(stats.averages.perPersonBags.toFixed(2)))}
+              label="每人平均疊數"
+              value={num(Number(stats.averages.perPersonStacks.toFixed(2)))}
               highlight
             />
           </div>
+
 
           <div className="mb-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
             <ProductionTrend rows={rows} month={month} stats={stats.list} worker={worker} />
