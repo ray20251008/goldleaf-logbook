@@ -106,7 +106,7 @@ function Index() {
   }, [rows, month]);
 
   const workers = useMemo(
-    () => [...new Set(rows.map((r) => r.worker))].sort(),
+    () => [...new Set([...WORKERS, ...rows.map((r) => r.worker)])],
     [rows],
   );
   const scopedRows = useMemo(
