@@ -20,10 +20,10 @@ export const Route = createFileRoute("/")({
         content:
           "記錄金紙進貨日、完成日、進貨籃數、出貨袋數與疊數，並自動統計每人每月產量與月底平均值。",
       },
-      { property: "og:title", content: "金紙製作紀錄表" },
+      { property: "og:title", content: "金紙製作紀錄表 | 進出貨與每月統計" },
       {
         property: "og:description",
-        content: "登錄金紙進出貨明細，自動彙整每人每月產量與平均值。",
+        content: "記錄金紙進貨日、完成日、進貨籃數、出貨袋數與疊數，並自動統計每人每月產量與月底平均值。",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
