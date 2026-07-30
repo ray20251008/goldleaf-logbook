@@ -106,7 +106,7 @@ export function exportPdf(p: ExportPayload) {
 <td>${num(f2(p.totals.stacks / (p.totals.records || 1)))}</td></tr></tfoot></table>
 <h2>明細（${p.records.length} 筆）</h2>
 <table><thead><tr><th>進貨日</th><th>完成日</th><th>製作人員</th><th>疊數</th><th>備註</th></tr></thead>
-<tbody>${detailRows || `<tr><td colspan="7">無資料</td></tr>`}</tbody></table>
+<tbody>${detailRows || `<tr><td colspan="5">無資料</td></tr>`}</tbody></table>
 <script>window.onload=()=>{window.focus();window.print();}<\/script>
 </body></html>`;
 
