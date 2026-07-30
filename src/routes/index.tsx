@@ -35,6 +35,7 @@ const today = () => new Date().toISOString().slice(0, 10);
 function Index() {
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => today().slice(0, 7));
+  const [worker, setWorker] = useState("");
   const [form, setForm] = useState({
     worker: "",
     intake_date: today(),
