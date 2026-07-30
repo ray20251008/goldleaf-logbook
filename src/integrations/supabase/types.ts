@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      joss_records: {
+        Row: {
+          bags_out: number
+          baskets_in: number
+          created_at: string
+          done_date: string | null
+          id: string
+          intake_date: string
+          note: string | null
+          stacks_out: number
+          worker: string
+        }
+        Insert: {
+          bags_out?: number
+          baskets_in?: number
+          created_at?: string
+          done_date?: string | null
+          id?: string
+          intake_date: string
+          note?: string | null
+          stacks_out?: number
+          worker: string
+        }
+        Update: {
+          bags_out?: number
+          baskets_in?: number
+          created_at?: string
+          done_date?: string | null
+          id?: string
+          intake_date?: string
+          note?: string | null
+          stacks_out?: number
+          worker?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
