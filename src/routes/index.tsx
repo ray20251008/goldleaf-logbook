@@ -128,8 +128,7 @@ function Index() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!form.worker.trim()) return setError("請填寫製作人員姓名");
-    if (!form.intake_date) return setError("請選擇進貨日");
+    if (!shared.intake_date) return setError("請選擇進貨日");
     addRecord.mutate();
   };
 
