@@ -65,3 +65,40 @@ export function buildStats(rows: JossRecord[], month: string) {
     count: inMonth.length,
   };
 }
+
+export function recentMonths(rows: JossRecord[], upTo: string, count = 6) {
+  const [y, m] = upTo.split("-").map(Number);
+  const out: string[] = [];
+  for (let i = count - 1; i >= 0; i--) {
+    const d = new Date(Date.UTC(y, m - 1 - i, 1));
+    out.push(`${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`);
+  }
+  return out;
+}
+
+export type TrendPoint = { month: string } & Record<string, number | string>;
+
+/** 每人每月出貨袋數趨勢（僅列出所選人員，或當月產量前 N 名） */
+export function buildTrend(
+  rows: JossRecord[],
+  months: string[],
+  workers: string[],
+): TrendPoint[] {
+  return months.map((mo) => {
+    const point: TrendPoint = { month: mo };
+    for (const w of workers) {
+      point[w] = rows
+        .filter((r) => r.worker === w && monthKey(r.intake_date) === mo)
+        .reduce((s, r) => s + (Number(r.bags_out) || 0), 0);
+    }
+    return point;
+  });
+}
+
+export type RankRow = WorkerMonthStat & { avgBagsPerRecord: number };
+
+export function buildRanking(stats: WorkerMonthStat[]): RankRow[] {
+  return stats
+    .map((s) => ({ ...s, avgBagsPerRecord: Number((s.bags / (s.records || 1)).toFixed(2)) }))
+    .sort((a, b) => b.avgBagsPerRecord - a.avgBagsPerRecord || b.bags - a.bags);
+}
