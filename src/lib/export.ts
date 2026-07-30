@@ -99,13 +99,13 @@ export function exportPdf(p: ExportPayload) {
 <h1>金紙製作紀錄統計</h1>
 <p class="meta">月份：${p.month}　|　人員：${scope}　|　匯出時間：${new Date().toLocaleString("zh-TW")}</p>
 <h2>每人統計</h2>
-<table><thead><tr><th>製作人員</th><th>筆數</th><th>進貨籃數</th><th>出貨袋數</th><th>疊數</th><th>平均每筆袋數</th></tr></thead>
-<tbody>${statRows || `<tr><td colspan="6">無資料</td></tr>`}</tbody>
+<table><thead><tr><th>製作人員</th><th>紀錄天數</th><th>總疊數</th><th>平均每日疊數</th></tr></thead>
+<tbody>${statRows || `<tr><td colspan="4">無資料</td></tr>`}</tbody>
 <tfoot><tr><td>月底平均（每人）</td><td>${num(f2(p.totals.records / (p.stats.length || 1)))}</td>
-<td>${num(f2(p.averages.perPersonBaskets))}</td><td>${num(f2(p.averages.perPersonBags))}</td>
-<td>${num(f2(p.averages.perPersonStacks))}</td><td>${num(f2(p.averages.perRecordBags))}</td></tr></tfoot></table>
+<td>${num(f2(p.averages.perPersonStacks))}</td>
+<td>${num(f2(p.totals.stacks / (p.totals.records || 1)))}</td></tr></tfoot></table>
 <h2>明細（${p.records.length} 筆）</h2>
-<table><thead><tr><th>進貨日</th><th>完成日</th><th>製作人員</th><th>進貨籃數</th><th>出貨袋數</th><th>疊數</th><th>備註</th></tr></thead>
+<table><thead><tr><th>進貨日</th><th>完成日</th><th>製作人員</th><th>疊數</th><th>備註</th></tr></thead>
 <tbody>${detailRows || `<tr><td colspan="7">無資料</td></tr>`}</tbody></table>
 <script>window.onload=()=>{window.focus();window.print();}<\/script>
 </body></html>`;
