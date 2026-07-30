@@ -280,15 +280,13 @@ function Index() {
 
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] text-sm">
+            <table className="w-full min-w-[420px] text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-muted-foreground">
                   <Th>製作人員</Th>
-                  <Th>筆數</Th>
-                  <Th>進貨籃數</Th>
-                  <Th>出貨袋數</Th>
-                  <Th>疊數</Th>
-                  <Th>平均每筆袋數</Th>
+                  <Th>紀錄天數</Th>
+                  <Th>總疊數</Th>
+                  <Th>平均每日疊數</Th>
                 </tr>
               </thead>
               <tbody>
@@ -296,10 +294,8 @@ function Index() {
                   <tr key={s.worker} className="border-b border-border/60">
                     <Td className="font-medium">{s.worker}</Td>
                     <Td>{s.records}</Td>
-                    <Td>{num(s.baskets)}</Td>
-                    <Td>{num(s.bags)}</Td>
                     <Td>{num(s.stacks)}</Td>
-                    <Td>{num(Number((s.bags / (s.records || 1)).toFixed(2)))}</Td>
+                    <Td>{num(Number((s.stacks / (s.records || 1)).toFixed(2)))}</Td>
                   </tr>
                 ))}
                 {stats.list.length === 0 && (
@@ -313,15 +309,20 @@ function Index() {
                   <tr className="bg-secondary/60 font-semibold">
                     <Td>月底平均（每人）</Td>
                     <Td>{num(Number((stats.totals.records / stats.list.length).toFixed(2)))}</Td>
-                    <Td>{num(Number(stats.averages.perPersonBaskets.toFixed(2)))}</Td>
-                    <Td>{num(Number(stats.averages.perPersonBags.toFixed(2)))}</Td>
                     <Td>{num(Number(stats.averages.perPersonStacks.toFixed(2)))}</Td>
-                    <Td>{num(Number(stats.averages.perRecordBags.toFixed(2)))}</Td>
+                    <Td>
+                      {num(
+                        Number(
+                          (stats.totals.stacks / (stats.totals.records || 1)).toFixed(2),
+                        ),
+                      )}
+                    </Td>
                   </tr>
                 </tfoot>
               )}
             </table>
           </div>
+
         </section>
 
         <section className="card-paper p-5 md:p-6">
