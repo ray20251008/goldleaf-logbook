@@ -81,7 +81,7 @@ export function recentMonths(rows: JossRecord[], upTo: string, count = 6) {
 
 export type TrendPoint = { month: string } & Record<string, number | string>;
 
-/** 每人每月出貨袋數趨勢（僅列出所選人員，或當月產量前 N 名） */
+/** 每人每月疊數趨勢（僅列出所選人員，或當月產量前 N 名） */
 export function buildTrend(
   rows: JossRecord[],
   months: string[],
@@ -92,16 +92,19 @@ export function buildTrend(
     for (const w of workers) {
       point[w] = rows
         .filter((r) => r.worker === w && monthKey(r.intake_date) === mo)
-        .reduce((s, r) => s + (Number(r.bags_out) || 0), 0);
+        .reduce((s, r) => s + (Number(r.stacks_out) || 0), 0);
     }
     return point;
   });
 }
 
-export type RankRow = WorkerMonthStat & { avgBagsPerRecord: number };
+export type RankRow = WorkerMonthStat & { avgStacksPerRecord: number };
 
 export function buildRanking(stats: WorkerMonthStat[]): RankRow[] {
   return stats
-    .map((s) => ({ ...s, avgBagsPerRecord: Number((s.bags / (s.records || 1)).toFixed(2)) }))
-    .sort((a, b) => b.avgBagsPerRecord - a.avgBagsPerRecord || b.bags - a.bags);
+    .map((s) => ({
+      ...s,
+      avgStacksPerRecord: Number((s.stacks / (s.records || 1)).toFixed(2)),
+    }))
+    .sort((a, b) => b.avgStacksPerRecord - a.avgStacksPerRecord || b.stacks - a.stacks);
 }

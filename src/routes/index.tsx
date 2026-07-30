@@ -178,42 +178,39 @@ function Index() {
             </div>
 
             <div className="overflow-x-auto rounded-lg border border-border">
-              <table className="w-full min-w-[560px] text-sm">
+              <table className="w-full min-w-[320px] text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-left text-muted-foreground">
                     <Th>製作人員</Th>
-                    <Th>進貨籃數</Th>
-                    <Th>出貨袋數</Th>
-                    <Th>出貨疊數</Th>
+                    <Th>製作疊數</Th>
                   </tr>
                 </thead>
                 <tbody>
                   {WORKERS.map((w) => (
                     <tr key={w} className="border-b border-border/60 last:border-0">
                       <Td className="font-medium">{w}</Td>
-                      {(["baskets_in", "bags_out", "stacks_out"] as const).map((k) => (
-                        <Td key={k}>
-                          <Input
-                            type="number"
-                            min="0"
-                            step="0.5"
-                            placeholder="0"
-                            aria-label={`${w} ${k}`}
-                            value={entries[w][k]}
-                            onChange={(e) =>
-                              setEntries((prev) => ({
-                                ...prev,
-                                [w]: { ...prev[w], [k]: e.target.value },
-                              }))
-                            }
-                          />
-                        </Td>
-                      ))}
+                      <Td>
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.5"
+                          placeholder="0"
+                          aria-label={`${w} 製作疊數`}
+                          value={entries[w].stacks_out}
+                          onChange={(e) =>
+                            setEntries((prev) => ({
+                              ...prev,
+                              [w]: { ...prev[w], stacks_out: e.target.value },
+                            }))
+                          }
+                        />
+                      </Td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+
 
             <Button type="submit" disabled={addRecord.isPending} className="w-full md:w-auto">
               {addRecord.isPending ? "儲存中…" : "儲存四人紀錄"}
@@ -264,16 +261,16 @@ function Index() {
             </div>
           </div>
 
-          <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat label="本月總進貨籃數" value={num(stats.totals.baskets)} />
-            <Stat label="本月總出貨袋數" value={num(stats.totals.bags)} />
+          <div className="mb-5 grid gap-3 sm:grid-cols-3">
             <Stat label="本月總疊數" value={num(stats.totals.stacks)} />
+            <Stat label="本月紀錄天數（人次）" value={num(stats.totals.records)} />
             <Stat
-              label="每人平均出貨袋數"
-              value={num(Number(stats.averages.perPersonBags.toFixed(2)))}
+              label="每人平均疊數"
+              value={num(Number(stats.averages.perPersonStacks.toFixed(2)))}
               highlight
             />
           </div>
+
 
           <div className="mb-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
             <ProductionTrend rows={rows} month={month} stats={stats.list} worker={worker} />
@@ -283,15 +280,13 @@ function Index() {
 
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] text-sm">
+            <table className="w-full min-w-[420px] text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-muted-foreground">
                   <Th>製作人員</Th>
-                  <Th>筆數</Th>
-                  <Th>進貨籃數</Th>
-                  <Th>出貨袋數</Th>
-                  <Th>疊數</Th>
-                  <Th>平均每筆袋數</Th>
+                  <Th>紀錄天數</Th>
+                  <Th>總疊數</Th>
+                  <Th>平均每日疊數</Th>
                 </tr>
               </thead>
               <tbody>
@@ -299,10 +294,8 @@ function Index() {
                   <tr key={s.worker} className="border-b border-border/60">
                     <Td className="font-medium">{s.worker}</Td>
                     <Td>{s.records}</Td>
-                    <Td>{num(s.baskets)}</Td>
-                    <Td>{num(s.bags)}</Td>
                     <Td>{num(s.stacks)}</Td>
-                    <Td>{num(Number((s.bags / (s.records || 1)).toFixed(2)))}</Td>
+                    <Td>{num(Number((s.stacks / (s.records || 1)).toFixed(2)))}</Td>
                   </tr>
                 ))}
                 {stats.list.length === 0 && (
@@ -316,15 +309,20 @@ function Index() {
                   <tr className="bg-secondary/60 font-semibold">
                     <Td>月底平均（每人）</Td>
                     <Td>{num(Number((stats.totals.records / stats.list.length).toFixed(2)))}</Td>
-                    <Td>{num(Number(stats.averages.perPersonBaskets.toFixed(2)))}</Td>
-                    <Td>{num(Number(stats.averages.perPersonBags.toFixed(2)))}</Td>
                     <Td>{num(Number(stats.averages.perPersonStacks.toFixed(2)))}</Td>
-                    <Td>{num(Number(stats.averages.perRecordBags.toFixed(2)))}</Td>
+                    <Td>
+                      {num(
+                        Number(
+                          (stats.totals.stacks / (stats.totals.records || 1)).toFixed(2),
+                        ),
+                      )}
+                    </Td>
                   </tr>
                 </tfoot>
               )}
             </table>
           </div>
+
         </section>
 
         <section className="card-paper p-5 md:p-6">
@@ -335,14 +333,12 @@ function Index() {
             <p className="text-sm text-muted-foreground">載入中…</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[720px] text-sm">
+              <table className="w-full min-w-[560px] text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-muted-foreground">
                     <Th>進貨日</Th>
                     <Th>完成日</Th>
                     <Th>製作人員</Th>
-                    <Th>進貨籃數</Th>
-                    <Th>出貨袋數</Th>
                     <Th>疊數</Th>
                     <Th>備註</Th>
                     <Th> </Th>
@@ -354,9 +350,8 @@ function Index() {
                       <Td>{r.intake_date}</Td>
                       <Td>{r.done_date ?? "—"}</Td>
                       <Td className="font-medium">{r.worker}</Td>
-                      <Td>{num(r.baskets_in)}</Td>
-                      <Td>{num(r.bags_out)}</Td>
                       <Td>{num(r.stacks_out)}</Td>
+
                       <Td className="text-muted-foreground">{r.note ?? "—"}</Td>
                       <Td>
                         <Button
