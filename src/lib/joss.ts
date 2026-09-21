@@ -1,5 +1,5 @@
-/** 固定四位製作人員 */
-export const WORKERS = ["高齊", "林育萱", "林芷嫻", "曾宇彤"] as const;
+/** 固定五位製作人員 */
+export const WORKERS = ["高齊", "林育萱", "林芷嫻", "曾宇彤", "張祐豪"] as const;
 
 export type JossRecord = {
   id: string;
