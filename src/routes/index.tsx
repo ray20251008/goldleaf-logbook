@@ -227,18 +227,13 @@ function Index() {
               每月統計
             </h2>
             <div className="flex flex-wrap items-center gap-2">
-              <select
+              <Input
+                type="month"
                 value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                className="h-9 rounded-md border border-input bg-card px-3 text-sm"
+                onChange={(e) => e.target.value && setMonth(e.target.value)}
+                className="h-9 w-[150px] text-sm"
                 aria-label="選擇月份"
-              >
-                {months.map((m) => (
-                  <option key={m} value={m}>
-                    {m.replace("-", " 年 ")} 月
-                  </option>
-                ))}
-              </select>
+              />
               <select
                 value={worker}
                 onChange={(e) => setWorker(e.target.value)}
