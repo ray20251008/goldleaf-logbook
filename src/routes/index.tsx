@@ -99,11 +99,6 @@ function Index() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["joss_records"] }),
   });
 
-  const months = useMemo(() => {
-    const set = new Set(rows.map((r) => monthKey(r.intake_date)));
-    set.add(month);
-    return [...set].sort().reverse();
-  }, [rows, month]);
 
   const workers = useMemo(
     () => [...new Set([...WORKERS, ...rows.map((r) => r.worker)])],
